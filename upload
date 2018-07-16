@@ -1,0 +1,2 @@
+python merge_hex.py s130_nrf51_2.0.1_softdevice.hex .pioenvs/id107/firmware.hex output.hex
+openocd -s /usr/share/openocd/scripts -f interface/stlink-v2.cfg -f target/nrf51_stlink.tcl  -c init -c "reset init" -c halt -c "nrf51 mass_erase" -c "program output.hex verify" -c reset -c exit

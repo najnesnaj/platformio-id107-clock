@@ -1,0 +1,33 @@
+there are 2 methods to upload to the smartwatch : 
+
+1) classic : connect uploaddevice (in my case stmlink-v2 to the watch)
+2) upload via bluetooth (FOTA firmware over the air, DFU device firmware update)
+
+
+
+
+1) classic upload 
+here you have to combine s130_nrf51_2.0.1_softdevice.hex with the compiled program, with a utily called mergehex (since I use unix, I use the python version of mergehex)
+
+to upload : ./upload (uses openocd and stmlink v2)
+
+2) upload via bluetooth
+this method uses the secure upload method, so you need the priv_key.pem and the booter.hex (which contains the bootloader that makes swithing to DFU possible)
+for a detailed description : https://github.com/najnesnaj/ota-dfu-smartband 
+
+here the watch has to be in DFU mode
+
+There are two methods to get it into DFU mode
+A) if you upload the booter.hex, by default it will be in DFU mode
+B) from within a program you can softreset the watch, which will put it into DFU mode
+
+once the watch is in DFU mode
+to upload ./uploadblue (adapt bluetooth mac address)
+
+
+
+
+NOTE:
+
+the script : upload-test,  contains a script that uploads softdevice + bootloader + application (and starts the application) -- so here you avoid uploading booter.hex (DFU capable) and uploading via bluetooth -- so this is the preferred method, because you always have the option to use DFU OTA
+

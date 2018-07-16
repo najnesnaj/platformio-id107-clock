@@ -1,0 +1,4 @@
+nrfutil settings generate --family NRF51 --application .pioenvs/id107/firmware.hex --application-version 1 --bootloader-version 1 --bl-settings-version 1 bootloader_setting.hex
+python merge_hex.py  bootloader_setting.hex booter.hex bootersetting.hex
+python merge_hex.py  bootersetting.hex  .pioenvs/id107/firmware.hex output.hex
+openocd -s /usr/share/openocd/scripts -f interface/stlink-v2.cfg -f target/nrf51_stlink.tcl  -c init -c "reset init" -c halt -c "nrf51 mass_erase" -c "program output.hex verify" -c reset -c exit
