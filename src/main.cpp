@@ -42,7 +42,7 @@ This example code is in the public domain.
 #include <BLEPeripheral.h>
 uint32_t last_wakeup = 0;
 
-#define SLEEP_TIMEOUT_MS 5000
+#define SLEEP_TIMEOUT_MS 15000
 
 #define OLED_WIDTH 64
 #define OLED_HEIGHT 32
@@ -60,6 +60,15 @@ BLERemoteService                 remoteCtsService            = BLERemoteService(
 
 // create remote characteristics with UUID and properties compliant to CTS service 
 BLERemoteCharacteristic          remoteCtsCharacteristic           = BLERemoteCharacteristic("2a2b", BLERead | BLENotify);
+
+
+//this is from led_switch.ino, but instead of switching a led, I want to use this
+//to soft-reset the watch, thus forcing it into DFU mode
+
+BLEService               ledService           = BLEService("19b10010e8f2537e4f6cd104768a1214");
+BLECharCharacteristic    switchCharacteristic = BLECharCharacteristic("19b10011e8f2537e4f6cd104768a1214", BLERead | BLEWrite);
+
+
 
 
 void blePeripheralConnectHandler(BLECentral& central) { 
@@ -171,13 +180,19 @@ void setup() {
 	// assign event handlers for characteristic
 	remoteCtsCharacteristic.setEventHandler(BLEValueUpdated, bleRemoteCtsCharacteristicValueUpdatedHandle);
 
+
+	//set up LED SWITCH (aka DFU mode)
+	blePeripheral.setLocalName("LED Switch");
+	blePeripheral.setAdvertisedServiceUuid(ledService.uuid());
+
+	// add service and characteristics
+	//   blePeripheral.addAttribute(ledService);
+	//     blePeripheral.addAttribute(switchCharacteristic);
+
+
+
 	// begin initialization
 	blePeripheral.begin();
-
-
-
-
-
 	oled.setScreenSize(OLED_WIDTH, OLED_HEIGHT);
 	oled.init();
 	oled.flipScreenVertically();
@@ -209,13 +224,20 @@ void loop() {
 			oled.wake();//we woke up, re-enable display
 			last_wakeup = millis();//save last wakeup
 		}
-		if (digitalRead(PIN_BUTTON1)==0) // readtime 
+		if (digitalRead(PIN_BUTTON1)==0) // sidebutton pushed => readtime  
 		{
-			//sd_power_gpregret_set(0xB1); //reset the nrf51822
-			//NVIC_SystemReset();
+			//use the bluetooth time service to set the time
 			readTime();	
 		}
-
+		// poll peripheral and switch to dfu mode
+		blePeripheral.poll();
+		if (switchCharacteristic.written()) {
+			// update LED if central has written to characteristic
+			if (switchCharacteristic.value()) {
+				sd_power_gpregret_set(0xB1); //reset the nrf51822
+				NVIC_SystemReset();
+			}
+		}
 		draw_clock();
 		// either woken up or didn't sleep. Clear event register anyways.
 		__SEV();        // Set event register

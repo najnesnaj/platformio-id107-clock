@@ -1,0 +1,7 @@
+analog clock  (the display is only 32 bit high) 
+-> maybe an idea to move the central point of the analog clock to the bottom, eg in case of three o'clock, and to the top in case of two-thirthy
+
+testing to be done for setting clock
+
+
+testing to be done for switching to DFU mode
