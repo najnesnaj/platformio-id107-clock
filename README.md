@@ -34,4 +34,14 @@ once in dfu-mode, you can use the uploadblue script to upload firmware via bluet
 
 
 under the "src" directory you'll find the "arduino" program with some "nordic" flavours
+===============================
+important Remark!
+===============================
+the normal state of the watch is sleep-mode, you can wake it up by touching the front touch button
+it will remain alive for 15 seconds (only during this time bluetooth will work)
+
+so touch it : and then update it!
+
+
+
 
