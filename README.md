@@ -30,12 +30,10 @@ if you write something to that service, it does not switch a led, but puts the w
 once in dfu-mode, you can use the uploadblue script to upload firmware via bluetooth, afterwards the watch goes back to normal bluetooth mode
 
 -----------------------------------------------------------------------
-
-
-
 under the "src" directory you'll find the "arduino" program with some "nordic" flavours
 -----------------------------------------------------------------------
-
+I found a lot of usefull information on https://gitter.im/nRF51822-Arduino-Mbed-smart-watch/Lobby
+----------------------------------------------
 important Remark!
 ===============================
 the normal state of the watch is sleep-mode, you can wake it up by touching the front touch button
