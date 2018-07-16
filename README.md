@@ -3,6 +3,10 @@ nrf51822 ID107 smartwatch arduino clock
 
 this is work in progress, that piggy backs on previous work by many people, mainly : @goran-mahovlic, @rogerclarkmelbourne, @curtpw, @Gordon, @micooke and in this case @arglurgl
 
+I used code from https://github.com/dingari/ota-dfu-python.git in order to upload firmware with a bluetooth 4.0 dongle on a raspberry pi
+code is included in the repository
+
+
 
 included is  a  HOWTO on setting up platformio for the smartwatch
 included is  a  HOWTO on using scripts to upload firmware 
