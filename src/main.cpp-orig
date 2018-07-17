@@ -65,8 +65,8 @@ BLERemoteCharacteristic          remoteCtsCharacteristic           = BLERemoteCh
 //this is from led_switch.ino, but instead of switching a led, I want to use this
 //to soft-reset the watch, thus forcing it into DFU mode
 
-BLEService               ledService           = BLEService("19b10010e8f2537e4f6cd104768a1214");
-BLECharCharacteristic    switchCharacteristic = BLECharCharacteristic("19b10011e8f2537e4f6cd104768a1214", BLERead | BLEWrite);
+//BLEService               ledService           = BLEService("19b10010e8f2537e4f6cd104768a1214");
+//BLECharCharacteristic    switchCharacteristic = BLECharCharacteristic("19b10011e8f2537e4f6cd104768a1214", BLERead | BLEWrite);
 
 
 
@@ -120,7 +120,7 @@ void bleRemoteCtsCharacteristicValueUpdatedHandle(BLECentral& central, BLERemote
 	// 1/256th of a second
 	byte fraction = currentTime[8];
 	// Print current time
-	/*  Serial.println("*** Current Time received ***");
+	  Serial.println("*** Current Time received ***");
 	    Serial.print(day);
 	    Serial.print(" ");
 	    Serial.print(months[month]);
@@ -138,8 +138,8 @@ void bleRemoteCtsCharacteristicValueUpdatedHandle(BLECentral& central, BLERemote
 	    Serial.print(fraction);
 	    Serial.println(" / 256 s");
 	    Serial.println("-------------------------------------");
-	    */
 }
+	    
 
 void readTime(){
 	remoteCtsCharacteristic.read();
@@ -180,16 +180,16 @@ void setup() {
 	// assign event handlers for characteristic
 	remoteCtsCharacteristic.setEventHandler(BLEValueUpdated, bleRemoteCtsCharacteristicValueUpdatedHandle);
 
-
+/*
 	//set up LED SWITCH (aka DFU mode)
 	blePeripheral.setLocalName("LED Switch");
 	blePeripheral.setAdvertisedServiceUuid(ledService.uuid());
 
 	// add service and characteristics
-	//   blePeripheral.addAttribute(ledService);
-	//     blePeripheral.addAttribute(switchCharacteristic);
+	   blePeripheral.addAttribute(ledService);
+	   blePeripheral.addAttribute(switchCharacteristic);
 
-
+*/
 
 	// begin initialization
 	blePeripheral.begin();
@@ -218,26 +218,28 @@ void loop() {
 		if ((millis()-last_wakeup) > SLEEP_TIMEOUT_MS) {//check if timeout occured
 			oled.sleep();//Put display to sleep
 			__WFE();   // sleep nrf51
-			//we can possiblly check somewhere here if we woke up from button or
-			//RTC1 overflow which triggers wakeup every 512 seconds...
-			//possibly also add call to now() here.
+//we can possiblly check somewhere here if we woke up from button or
+//RTC1 overflow which triggers wakeup every 512 seconds...
+//possibly also add call to now() here.
 			oled.wake();//we woke up, re-enable display
 			last_wakeup = millis();//save last wakeup
 		}
+			readTime();	
 		if (digitalRead(PIN_BUTTON1)==0) // sidebutton pushed => readtime  
 		{
 			//use the bluetooth time service to set the time
 			readTime();	
 		}
 		// poll peripheral and switch to dfu mode
-		blePeripheral.poll();
-		if (switchCharacteristic.written()) {
+//		blePeripheral.poll();
+/*		if (switchCharacteristic.written()) {
 			// update LED if central has written to characteristic
 			if (switchCharacteristic.value()) {
 				sd_power_gpregret_set(0xB1); //reset the nrf51822
 				NVIC_SystemReset();
 			}
 		}
+		*/
 		draw_clock();
 		// either woken up or didn't sleep. Clear event register anyways.
 		__SEV();        // Set event register

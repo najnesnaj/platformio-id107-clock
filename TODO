@@ -5,3 +5,57 @@ testing to be done for setting clock
 
 
 testing to be done for switching to DFU mode
+
+
+
+
+19b10011e8f2537e4f6cd104768a1214
+
+
+
+
+
+
+[bluetooth]# scan on
+Discovery started
+[CHG] Controller 00:1A:7D:DA:71:0B Discovering: yes
+[CHG] Device DA:E2:C9:AB:2F:65 RSSI: -42
+[bluetooth]# connect DA:E2:C9:AB:2F:65 public
+Attempting to connect to DA:E2:C9:AB:2F:65
+[CHG] Device DA:E2:C9:AB:2F:65 Connected: yes
+Connection successful
+[CHG] Device DA:E2:C9:AB:2F:65 Name: Arduino
+[CHG] Device DA:E2:C9:AB:2F:65 Alias: Arduino
+[CHG] Device DA:E2:C9:AB:2F:65 ServicesResolved: yes
+
+
+register-service 19b10010-e8f2-537e-4f6c-d104768a1214
+
+register-characteristic 19b10011-e8f2-537e-4f6c-d104768a1214 write
+acqui
+select-attribute 19b10011-e8f2-537e-4f6c-d104768a1214
+
+write 0x99e
+
+Attempting to write /org/bluez/hci0/dev_DA_E2_C9_AB_2F_65/service000c/char000d
+[CHG] Device DA:E2:C9:AB:2F:65 ServicesResolved: no
+[CHG] Device DA:E2:C9:AB:2F:65 Connected: no
+[CHG] Device DA:E2:C9:AB:2F:65 RSSI: -44
+[CHG] Device DA:E2:C9:AB:2F:65 Name: LED Switch
+[CHG] Device DA:E2:C9:AB:2F:65 Alias: LED Switch
+
+
+register-service 19b10010-e8f2-537e-4f6c-d104768a1214
+
+register-characteristic 19b10011-e8f2-537e-4f6c-d104768a1214 write
+acqui
+select-attribute 19b10011-e8f2-537e-4f6c-d104768a1214
+
+write 0x99e
+
+Attempting to write /org/bluez/hci0/dev_DA_E2_C9_AB_2F_65/service000c/char000d
+[CHG] Device DA:E2:C9:AB:2F:65 ServicesResolved: no
+[CHG] Device DA:E2:C9:AB:2F:65 Connected: no
+[CHG] Device DA:E2:C9:AB:2F:65 RSSI: -44
+[CHG] Device DA:E2:C9:AB:2F:65 Name: LED Switch
+[CHG] Device DA:E2:C9:AB:2F:65 Alias: LED Switch
