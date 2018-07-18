@@ -1,3 +1,9 @@
+
+buttonlessdfu.cpp  keep getting errorcode (2) while using sd_power_gpregret_set(0x0B); => softreboots without entering in DFU mode
+
+
+
+
 analog clock  (the display is only 32 bit high) 
 -> maybe an idea to move the central point of the analog clock to the bottom, eg in case of three o'clock, and to the top in case of two-thirthy
 
@@ -12,6 +18,11 @@ testing to be done for switching to DFU mode
 19b10011e8f2537e4f6cd104768a1214
 
 
+
+
+writing with bluetoothd (menu gatt)  ---- gives error --- updated to latest release of bluez and use --experimental flag .....
+select-attribute 19b10011-e8f2-537e-4f6c-d104768a1214
+write 0x99
 
 
 

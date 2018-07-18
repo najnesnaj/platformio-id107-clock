@@ -18,7 +18,7 @@ for a detailed description : https://github.com/najnesnaj/ota-dfu-smartband
 here the watch has to be in DFU mode
 
 There are two methods to get it into DFU mode
-A) if you upload the booter.hex, by default it will be in DFU mode
+A) if you upload the booter.hex, by default it will be in DFU mode (use the uploadboater script)
 B) from within a program you can softreset the watch, which will put it into DFU mode
 
 once the watch is in DFU mode

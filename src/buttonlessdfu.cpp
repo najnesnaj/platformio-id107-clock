@@ -71,78 +71,78 @@ BLECharCharacteristic    switchCharacteristic = BLECharCharacteristic("19b10011e
 
 /*
 
-void blePeripheralConnectHandler(BLECentral& central) { 
-	Serial.print(F("Connected event, central: "));
-	Serial.println(central.address());
-}
+   void blePeripheralConnectHandler(BLECentral& central) { 
+   Serial.print(F("Connected event, central: "));
+   Serial.println(central.address());
+   }
 
-void blePeripheralDisconnectHandler(BLECentral& central) {
+   void blePeripheralDisconnectHandler(BLECentral& central) {
 
-	Serial.print(F("Disconnected event, central: "));
-	Serial.println(central.address());
-}
+   Serial.print(F("Disconnected event, central: "));
+   Serial.println(central.address());
+   }
 
-void blePeripheralRemoteServicesDiscoveredHandler(BLECentral& central) {
+   void blePeripheralRemoteServicesDiscoveredHandler(BLECentral& central) {
 
-	Serial.print(F("Remote services discovered event, central: "));
-	Serial.println(central.address());
+   Serial.print(F("Remote services discovered event, central: "));
+   Serial.println(central.address());
 
-	if (remoteCtsCharacteristic.canRead()) {
-		remoteCtsCharacteristic.read();
-	}
-}
-*/
+   if (remoteCtsCharacteristic.canRead()) {
+   remoteCtsCharacteristic.read();
+   }
+   }
+   */
 
 /*
 
-void bleRemoteCtsCharacteristicValueUpdatedHandle(BLECentral& central, BLERemoteCharacteristic& characteristic) {
-	// copy the time value in a local variable
-	char currentTime[BLE_REMOTE_ATTRIBUTE_MAX_VALUE_LENGTH + 1];
-	memset(currentTime, 0, sizeof(currentTime));
-	memcpy(currentTime, remoteCtsCharacteristic.value(), remoteCtsCharacteristic.valueLength());
-	// year is the first two bytes of the string
-	byte first=currentTime[0];
-	byte second=currentTime[1];
-	uint16_t year=first | (second << 8);
-	// month is the third byte
-	byte month = currentTime[2];
-	// day, hours, minutes and seconds follow
-	byte day = currentTime[3];
-	byte hours = currentTime[4];
-	byte minutes = currentTime[5];
-	byte seconds = currentTime[6];
+   void bleRemoteCtsCharacteristicValueUpdatedHandle(BLECentral& central, BLERemoteCharacteristic& characteristic) {
+// copy the time value in a local variable
+char currentTime[BLE_REMOTE_ATTRIBUTE_MAX_VALUE_LENGTH + 1];
+memset(currentTime, 0, sizeof(currentTime));
+memcpy(currentTime, remoteCtsCharacteristic.value(), remoteCtsCharacteristic.valueLength());
+// year is the first two bytes of the string
+byte first=currentTime[0];
+byte second=currentTime[1];
+uint16_t year=first | (second << 8);
+// month is the third byte
+byte month = currentTime[2];
+// day, hours, minutes and seconds follow
+byte day = currentTime[3];
+byte hours = currentTime[4];
+byte minutes = currentTime[5];
+byte seconds = currentTime[6];
 
 
-	setTime(hours,minutes,seconds, day, month,year);
+setTime(hours,minutes,seconds, day, month,year);
 
-	// day of the week
-	byte dow = currentTime[7];
-	// 1/256th of a second
-	byte fraction = currentTime[8];
-	// Print current time
-	  Serial.println("*** Current Time received ***");
-	    Serial.print(day);
-	    Serial.print(" ");
-	    Serial.print(months[month]);
-	    Serial.print(" ");
-	    Serial.print(year);
-	    Serial.print(", ");
-	    Serial.print(hours);
-	    Serial.print(":");
-	    Serial.print(minutes);
-	    Serial.print(":");
-	    Serial.println(seconds);
-	    Serial.print("Day of the week: ");
-	    Serial.println(days[dow]);
-	    Serial.print("Fractions: ");
-	    Serial.print(fraction);
-	    Serial.println(" / 256 s");
-	    Serial.println("-------------------------------------");
+// day of the week
+byte dow = currentTime[7];
+// 1/256th of a second
+byte fraction = currentTime[8];
+// Print current time
+Serial.println("*** Current Time received ***");
+Serial.print(day);
+Serial.print(" ");
+Serial.print(months[month]);
+Serial.print(" ");
+Serial.print(year);
+Serial.print(", ");
+Serial.print(hours);
+Serial.print(":");
+Serial.print(minutes);
+Serial.print(":");
+Serial.println(seconds);
+Serial.print("Day of the week: ");
+Serial.println(days[dow]);
+Serial.print("Fractions: ");
+Serial.print(fraction);
+Serial.println(" / 256 s");
+Serial.println("-------------------------------------");
 }
-	    
+
 
 void readTime(){
-	remoteCtsCharacteristic.read();
+remoteCtsCharacteristic.read();
 }
 */
 void draw_clock(){  //draw clock on OLED
@@ -163,7 +163,7 @@ void setup() {
 
 	setTime(__TIME_UNIX__);//set clock to build time
 
-/*	blePeripheral.setLocalName("CTS-Client");
+	/*	blePeripheral.setLocalName("CTS-Client");
 
 	// set device name and appearance
 	blePeripheral.setDeviceName("CTS client");
@@ -186,8 +186,8 @@ void setup() {
 	blePeripheral.setAdvertisedServiceUuid(ledService.uuid());
 
 	// add service and characteristics
-	   blePeripheral.addAttribute(ledService);
-	   blePeripheral.addAttribute(switchCharacteristic);
+	blePeripheral.addAttribute(ledService);
+	blePeripheral.addAttribute(switchCharacteristic);
 
 
 
@@ -200,48 +200,61 @@ void setup() {
 	oled.setFont(ArialMT_Plain_10);
 
 	// Configure and Enable interrupt on nRF side
-//	NRF_GPIO->PIN_CNF[PIN_BUTTON2] |= (GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos);
-//	NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_PORT_Enabled << GPIOTE_INTENSET_PORT_Pos;
+	//	NRF_GPIO->PIN_CNF[PIN_BUTTON2] |= (GPIO_PIN_CNF_SENSE_High << GPIO_PIN_CNF_SENSE_Pos);
+	//	NRF_GPIOTE->INTENSET = GPIOTE_INTENSET_PORT_Enabled << GPIOTE_INTENSET_PORT_Pos;
 	// Configure ARM chip to wakeup on interrupt from nRF side, but no need to call ISR
-//	NVIC_DisableIRQ(GPIOTE_IRQn);
-//	SCB->SCR |= SCB_SCR_SEVONPEND_Msk;
+	//	NVIC_DisableIRQ(GPIOTE_IRQn);
+	//	SCB->SCR |= SCB_SCR_SEVONPEND_Msk;
 }
 
 
 
 void loop() {
+String myString;
+	uint32_t err_code;
+	//	while (1) {
+	//		NRF_GPIOTE->EVENTS_PORT = 0;
+	//		NVIC_ClearPendingIRQ(GPIOTE_IRQn);
 
-//	while (1) {
-//		NRF_GPIOTE->EVENTS_PORT = 0;
-//		NVIC_ClearPendingIRQ(GPIOTE_IRQn);
-
-//		if ((millis()-last_wakeup) > SLEEP_TIMEOUT_MS) {//check if timeout occured
-//			oled.sleep();//Put display to sleep
-//			__WFE();   // sleep nrf51
-//we can possiblly check somewhere here if we woke up from button or
-//RTC1 overflow which triggers wakeup every 512 seconds...
-//possibly also add call to now() here.
-//			oled.wake();//we woke up, re-enable display
-//			last_wakeup = millis();//save last wakeup
-//		}
-//			readTime();	
-		if (digitalRead(PIN_BUTTON1)==0) // sidebutton pushed => readtime  
-		{
-			//use the bluetooth time service to set the time
-//			readTime();	
-		}
-		// poll peripheral and switch to dfu mode
-		blePeripheral.poll();
-		if (switchCharacteristic.written()) {
-			// update LED if central has written to characteristic
-			if (switchCharacteristic.value()) {
-				sd_power_gpregret_set(0xB1); //reset the nrf51822
-				NVIC_SystemReset();
-			}
-		}
-		draw_clock();
-		// either woken up or didn't sleep. Clear event register anyways.
-//		__SEV();        // Set event register
-//		__WFE();        // clear event register
-//	}
+	//		if ((millis()-last_wakeup) > SLEEP_TIMEOUT_MS) {//check if timeout occured
+	//			oled.sleep();//Put display to sleep
+	//			__WFE();   // sleep nrf51
+	//we can possiblly check somewhere here if we woke up from button or
+	//RTC1 overflow which triggers wakeup every 512 seconds...
+	//possibly also add call to now() here.
+	//			oled.wake();//we woke up, re-enable display
+	//			last_wakeup = millis();//save last wakeup
+	//		}
+	//			readTime();	
+	if (digitalRead(PIN_BUTTON1)==0) // sidebutton pushed => readtime  
+	{
+		//use the bluetooth time service to set the time
+		//			readTime();	
+	}
+	// poll peripheral and switch to dfu mode
+	blePeripheral.poll();
+	if (switchCharacteristic.value()) {
+		//		if (switchCharacteristic.written()) {
+		// update LED if central has written to characteristic
+		//			if (switchCharacteristic.value()) {
+		oled.clear();
+		oled.drawString(0, 0, "RECEIVED");
+		blePeripheral.end();
+		sd_power_gpregret_clr(0xffffffff);
+		delay(10);
+//		sd_softdevice_disable();
+		err_code=sd_power_gpregret_set(0xB1); //reset the nrf51822
+myString = String(err_code);
+		oled.drawString(0, 10 ,myString);
+		delay(2000);
+		oled.display();
+		//				sd_power_gpregret_set(BOOTLOADER_DFU_START); //reset the nrf51822
+		NVIC_SystemReset();
+		//			}
+	}
+	draw_clock();
+	// either woken up or didn't sleep. Clear event register anyways.
+	//		__SEV();        // Set event register
+	//		__WFE();        // clear event register
+	//	}
 }
