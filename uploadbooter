@@ -1,1 +1,1 @@
-openocd -s /usr/share/openocd/scripts -f interface/stlink-v2.cfg -f target/nrf51_stlink.tcl  -c init -c "reset init" -c halt -c "nrf51 mass_erase" -c "program booter.hex verify" -c reset -c exit
+openocd -s /usr/share/openocd/scripts -f interface/stlink-v2.cfg -f target/nrf51_stlink.tcl  -c init -c "reset init" -c halt -c "nrf51 mass_erase" -c "program dfuboot.hex verify" -c reset -c exit

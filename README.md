@@ -39,11 +39,14 @@ nrf_dfu.c
  
  __WEAK bool nrf_dfu_enter_check(void)
  {
- uint32_t  regwaarde;
- sd_power_gpregret_get(&regwaarde);
- if (regwaarde==0xB1){
-         return true;
-	 }
+if (NRF_POWER->GPREGRET==0xBB){
+       NRF_POWER->GPREGRET = 0; //set a different value to avoid loop
+               return true;
+	       }
+
+
+
+
 
 
 

@@ -43,7 +43,7 @@ This example code is in the public domain.
 uint32_t last_wakeup = 0;
 
 #define SLEEP_TIMEOUT_MS 15000
-#define BOOTLOADER_DFU_START (0xB1)
+//#define BOOTLOADER_DFU_START (0xB1)
 #define OLED_WIDTH 64
 #define OLED_HEIGHT 32
 SSD1306Spi oled(OLED_RST, OLED_DC, OLED_CS); // (pin_rst, pin_dc, pin_cs)
@@ -205,12 +205,15 @@ void setup() {
 	// Configure ARM chip to wakeup on interrupt from nRF side, but no need to call ISR
 	//	NVIC_DisableIRQ(GPIOTE_IRQn);
 	//	SCB->SCR |= SCB_SCR_SEVONPEND_Msk;
+
+	sd_power_gpregret_set(0xB2);
+
 }
 
 
 
 void loop() {
-String myString;
+	String myString;
 	uint32_t err_code;
 	//	while (1) {
 	//		NRF_GPIOTE->EVENTS_PORT = 0;
@@ -234,27 +237,28 @@ String myString;
 	// poll peripheral and switch to dfu mode
 	blePeripheral.poll();
 	if (switchCharacteristic.value()) {
-		//		if (switchCharacteristic.written()) {
-		// update LED if central has written to characteristic
-		//			if (switchCharacteristic.value()) {
-		oled.clear();
-		oled.drawString(0, 0, "RECEIVED");
-//		blePeripheral.end();
-//		sd_softdevice_disable();
-		sd_power_gpregret_clr(0xffffffff);
-		err_code=sd_power_gpregret_set(0xB1); //reset the nrf51822
-myString = String(err_code);
-//memset(&dfus_init, 0, sizeof(dfus_init));	
-oled.drawString(0, 10 ,myString);
-		delay(3000);
-		oled.display();
-	//					sd_power_gpregret_set(BOOTLOADER_DFU_START); //reset the nrf51822
-		NVIC_SystemReset();
-		//			}
-	}
-	draw_clock();
-	// either woken up or didn't sleep. Clear event register anyways.
-	//		__SEV();        // Set event register
-	//		__WFE();        // clear event register
-	//	}
+		if (switchCharacteristic.written()) {
+			// update LED if central has written to characteristic
+			//			if (switchCharacteristic.value()) {
+			oled.clear();
+			oled.drawString(0, 0, "RECEIVED");
+			//		blePeripheral.end();
+			//		sd_softdevice_disable();
+			sd_power_gpregret_clr(0xffffffff);
+			//		err_code=sd_power_gpregret_set(0xB1); //reset the nrf51822
+			myString = String(err_code);
+			//memset(&dfus_init, 0, sizeof(dfus_init));	
+			oled.drawString(0, 10 ,myString);
+			delay(3000);
+			oled.display();
+			sd_power_gpregret_set(0xBB); //in honour of Brigitte Bardot -- initiales BB
+			//					sd_power_gpregret_set(BOOTLOADER_DFU_START); //reset the nrf51822
+			NVIC_SystemReset();
+		}
+		}
+		draw_clock();
+		// either woken up or didn't sleep. Clear event register anyways.
+		//		__SEV();        // Set event register
+		//		__WFE();        // clear event register
+		//	}
 }
