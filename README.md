@@ -31,6 +31,25 @@ BLEService("19b10010e8f2537e4f6cd104768a1214");
 
 if you write something to that service, it does not switch a led, but puts the watch in DFU mode   (buttonless DFU(device firmware update) mode)
 
+in order to get to buttonless DFU I modified the bootloader
+
+components/libraries/bootloader/dfu
+nrf_dfu.c
+
+ 
+ __WEAK bool nrf_dfu_enter_check(void)
+ {
+ uint32_t  regwaarde;
+ sd_power_gpregret_get(&regwaarde);
+ if (regwaarde==0xB1){
+         return true;
+	 }
+
+
+
+
+
+
 once in dfu-mode, you can use the uploadblue script to upload firmware via bluetooth, afterwards the watch goes back to normal bluetooth mode
 
 -----------------------------------------------------------------------
