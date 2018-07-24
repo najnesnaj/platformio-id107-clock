@@ -1,2 +1,3 @@
 nrfutil pkg generate --hw-version 51 --application-version 10 --application .pioenvs/id107/firmware.hex --sd-req 0x87 --key-file priv_key.pem app_dfu_package.zip
 python ./dfu.py -z app_dfu_package.zip -a  DA:E2:C9:AB:2F:65 --secure
+python ./dfu.py -z app_dfu_package.zip -a  DA:E2:C9:AB:2F:65 --secure
